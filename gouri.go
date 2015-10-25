@@ -150,7 +150,7 @@ type redirectHandler struct {
 }
 
 func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
-	host := req.Host // "s.z3q.net" use for test
+	host := req.Host // "z3q.net" use for test
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(rsp, req, item); b {
@@ -176,7 +176,7 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
 		}else{
 			path = strings.Replace(item.AllLocation,"{path}",path,-1)
 		}
-		return fmt.Sprintf("%s%s%s%s", path, con, query), true
+		return fmt.Sprintf("%s%s%s", path, con, query), true
 	}
 	if v, ok := item.Map[path[1:]]; ok {
 		return fmt.Sprintf("%s%s%s", v, con, query), true
