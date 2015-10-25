@@ -68,12 +68,12 @@ func (i *ItemManager) initExample() {
 	var defaultItems []*Item = []*Item{
 		&Item{
 			Host:        "*.z3q.net",
-			AllLocation: "http://www.z3q.net",
+			AllLocation: "http://www.k3f.net/{path}",
 		},
 		&Item{
-			Host: "s.z3q.net",
+			Host: "z3q.net",
 			Map: map[string]string{
-				"blog": "http://www.s1n1.com",
+				"blog": "http://www.k3f.net/cms/",
 			},
 		},
 	}
@@ -162,7 +162,8 @@ func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) 
 	rsp.Write([]byte("Not match any host"))
 }
 
-func (r *redirectHandler) getLocation(rsp http.ResponseWriter, req *http.Request, item *Item) (string, bool) {
+func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
+	req *http.Request, item *Item) (string, bool) {
 	path := req.URL.Path
 	query := req.URL.RawQuery
 	var con string
@@ -170,7 +171,12 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter, req *http.Request
 		con = "?"
 	}
 	if len(item.AllLocation) != 0 {
-		return fmt.Sprintf("%s%s%s%s", item.AllLocation, path, con, query), true
+		if strings.Index(item.AllLocation,"{path}") == -1 {
+			path = item.AllLocation + path
+		}else{
+			path = strings.Replace(item.AllLocation,"{path}",path,-1)
+		}
+		return fmt.Sprintf("%s%s%s%s", path, con, query), true
 	}
 	if v, ok := item.Map[path[1:]]; ok {
 		return fmt.Sprintf("%s%s%s", v, con, query), true
