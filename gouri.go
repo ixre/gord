@@ -171,10 +171,10 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
 		con = "?"
 	}
 	if len(item.AllLocation) != 0 {
-		if strings.Index(item.AllLocation,"{path}") == -1 {
+		if strings.Index(item.AllLocation, "{path}") == -1 {
 			path = item.AllLocation + path
-		}else{
-			path = strings.Replace(item.AllLocation,"{path}",path,-1)
+		} else {
+			path = strings.Replace(item.AllLocation, "{path}", path, -1)
 		}
 		return fmt.Sprintf("%s%s%s", path, con, query), true
 	}
