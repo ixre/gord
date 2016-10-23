@@ -207,7 +207,7 @@ type redirectHandler struct {
 
 func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
-	host = "www.at3.net" // "z3q.net" use for test
+	//host = "www.at3.net" // "z3q.net" use for test
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(rsp, req, item); b {
