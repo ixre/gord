@@ -23,21 +23,32 @@ import (
 	"strings"
 )
 
+var (
+	port  int
+	dir   string
+	debug bool = false
+)
+
 func main() {
-	var port int
-	var dir string
 	flag.IntVar(&port, "port", 8302, "port")
 	flag.StringVar(&dir, "dir", "./", "config file")
+	flag.BoolVar(&debug, "log", false, "print log")
+	flag.Parse()
 	baseDir := dir
-
 	app := http.Server{
 		Addr:    fmt.Sprintf(":%d", port),
 		Handler: getHandler(baseDir),
 	}
-
-	log.Printf("[ Service] - running on port %s\n", app.Addr)
+	log.Printf("[ GoRd][ Service] - running on port %s\n", app.Addr)
 	if err := app.ListenAndServe(); err != nil {
 		log.Fatalf(" Server aborted!reason:%s\n", err.Error())
+	}
+}
+
+func debugLog(v ...interface{}) {
+	if debug {
+		v = append([]interface{}{"[ GoRd][ Log]"}, v...)
+		log.Println(v...)
 	}
 }
 
@@ -98,7 +109,7 @@ func (i *ItemManager) initExample() {
 			To:   "http://www.at3.net/{path}{query}",
 			Location: map[string]string{
 				"/a":      "http://a.com",
-				"/b/*":    "http://b.com/{*}",
+				"/b/*":    "http://b.com/t-{*}",
 				"/a/b":    "http://a.com/{path}{query}",
 				"/1/2/3/": "http://a.com/{#0}-{#1}-{#2}",
 			},
@@ -154,6 +165,7 @@ func (i *ItemManager) GetItemsFromFile(path string) []*Item {
 					os.Exit(1)
 				}
 			}
+			debugLog("[ Load]: conf file:", path, "load ok!")
 			return items
 		}
 	}
@@ -207,7 +219,7 @@ type redirectHandler struct {
 
 func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
-	//host = "www.at3.net" // "z3q.net" use for test
+	// host = "www.at3.net" // "z3q.net" use for test
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(rsp, req, item); b {
@@ -229,15 +241,22 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
 	}
 	//查找匹配
 	to := item.To
+	anyMatchPos := -1
 	for k, v := range item.Location {
+		debugLog("[ Compare]:对比相同，path:", path, "; key:", k)
 		//判断路径是否相同
 		if path == k {
 			to = v
 			break
 		}
 		//匹配如：/d/* 含通配符的路径
-		if strings.HasSuffix(k, "*") {
-			if strings.HasPrefix(path, k[:len(k)-1]) {
+		anyMatch := strings.HasSuffix(k, "*")
+		debugLog("[ Compare]:包含通配:", anyMatch)
+		if anyMatch {
+			anyMatchPos = len(k) - 1 //通配符所在的索引位置
+			anyMatch = strings.HasPrefix(path, k[:anyMatchPos])
+			debugLog("[ Compare]:判断通配:", anyMatch, k[:anyMatchPos])
+			if anyMatch {
 				to = v
 				break
 			}
@@ -256,6 +275,10 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
 	if strings.Contains(to, "{query}") {
 		to = strings.Replace(to, "{query}", concat+query, -1)
 	}
+	//路径通配
+	if strings.Contains(to, "{*}") && anyMatchPos != -1 {
+		to = strings.Replace(to, "{*}", path[anyMatchPos:], -1)
+	}
 	//匹配含有路径片段的URL,{#序号}表示指定的路径片段
 	if strings.Contains(to, "{#") {
 		segments := strings.Split(path[1:], "/")
@@ -264,6 +287,6 @@ func (r *redirectHandler) getLocation(rsp http.ResponseWriter,
 				segments[i], -1)
 		}
 	}
-	//log.Println("--- origin:", path, "; target:", to)
+	debugLog("--- origin:", path, "; target:", to)
 	return to, true
 }
