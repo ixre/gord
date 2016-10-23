@@ -1,6 +1,6 @@
 /**
- * Copyright 2015 @ z3q.net.
- * name : gourl.go
+ * Copyright 2015 @ at3.net.
+ * name : gord.go
  * author : jarryliu
  * date : -- :
  * description :
