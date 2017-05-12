@@ -3,11 +3,11 @@
 
 ## 应用场景 ##
 1. 做301跳转
-2. 短域名，比如:z3q.net/blog 跳转到我的博客http://www.s1n1.com
+2. 短域名，比如:to2.net/blog 跳转到我的博客http://www.s1n1.com
 
 ## 配置 ##
 配置文件后缀为*.conf，启动时会加载改目录下的所有配置。 默认加载根目录下的配置。
-host项支持通配，如: *.z3q.net 能匹配 z3q.net的所有子域名
+host项支持通配，如: *.to2.net 能匹配 to2.net的所有子域名
 
 ## 启动 ##
 ./gord -dir=./ -port=8032
