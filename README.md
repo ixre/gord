@@ -16,8 +16,8 @@ host项支持通配，如: *.z3q.net 能匹配 z3q.net的所有子域名
 
     [
       {
-       "host": "*.at3.net",
-       "to": "http://www.at3.net/{path}{query}",
+       "host": "*.to2.net",
+       "to": "http://www.to2.net/{path}{query}",
        "location": {
         "/1/2/3/": "http://a.com/{#0}-{#1}-{#2}",
         "/a": "http://a.com",

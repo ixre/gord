@@ -105,8 +105,8 @@ func (i *ItemManager) checkDir(path string) {
 func (i *ItemManager) initExample() {
 	var defaultItems []*Item = []*Item{
 		{
-			Host: "*.at3.net",
-			To:   "http://www.at3.net/{path}{query}",
+			Host: "*.to2.net",
+			To:   "http://www.to2.net/{path}{query}",
 			Location: map[string]string{
 				"/a":      "http://a.com",
 				"/b/*":    "http://b.com/t-{*}",
@@ -219,7 +219,7 @@ type redirectHandler struct {
 
 func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
-	// host = "www.at3.net" // "z3q.net" use for test
+	// host = "www.to2.net" // "z3q.net" use for test
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(rsp, req, item); b {
