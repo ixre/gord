@@ -108,9 +108,8 @@ func (i *ItemManager) initExample() {
 			Host: "*.to2.net",
 			To:   "http://www.to2.net/{path}{query}",
 			Location: map[string]string{
-				"/a":      "http://a.com",
+				"/a":      "http://a.com/{path}{query}",
 				"/b/*":    "http://b.com/t-{*}",
-				"/a/b":    "http://a.com/{path}{query}",
 				"/1/2/3/": "http://a.com/{#0}-{#1}-{#2}",
 			},
 		},
@@ -219,7 +218,7 @@ type redirectHandler struct {
 
 func (r *redirectHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
-	// host = "www.to2.net" // "z3q.net" use for test
+	// host = "www.to2.net" // "to2.net" use for test
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(rsp, req, item); b {
