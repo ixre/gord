@@ -53,7 +53,7 @@ func debugLog(v ...interface{}) {
 }
 
 func getHandler(confPath string) http.Handler {
-	r := &gordHandler{
+	r := &HttpHandler{
 		itemManager: &ItemManager{
 			confPath: confPath,
 		},
@@ -159,16 +159,16 @@ func (i *ItemManager) GetItemsFromFile(path string) []*Item {
 		if err == nil {
 			for _, v := range items {
 				if err = i.checkItem(v); err != nil {
-					log.Println(fmt.Sprintf("配置有误! 文件：%s; host: %s; error:%s",
+					log.Println(fmt.Sprintf("error config file ：%s; host: %s; error:%s",
 						path, v.Host, err.Error()))
 					os.Exit(1)
 				}
 			}
-			debugLog("[ Load]: conf file:", path, "load ok!")
+			debugLog("[ Gord][ Load]: conf file:", path, "load ok!")
 			return items
 		}
 	}
-	log.Println("加载配置:" + path + "出错：" + err.Error())
+	log.Println("load config " + path + " error ：" + err.Error())
 	os.Exit(1)
 	return nil
 }
@@ -186,7 +186,9 @@ func (i *ItemManager) Append(items []*Item) {
 		hostArr := strings.Split(v.Host, " ")
 		for _, host := range hostArr {
 			if _, ok := i.items[host]; ok {
-				panic("has exists host " + host)
+				log.Println("host " + host + " already exists ")
+				os.Exit(0)
+				break
 			}
 			i.items[host] = v
 		}
@@ -215,13 +217,13 @@ func (i *ItemManager) matchHost(cfgHost, host string) bool {
 	return false
 }
 
-var _ http.Handler = new(gordHandler)
+var _ http.Handler = new(HttpHandler)
 
-type gordHandler struct {
+type HttpHandler struct {
 	itemManager *ItemManager
 }
 
-func (r *gordHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
+func (r *HttpHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
 	debugLog("[ Request]: source host ", host)
 	var item *Item = r.itemManager.GetItemByHost(host)
@@ -236,7 +238,7 @@ func (r *gordHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 }
 
 // 获取目标路径
-func (r *gordHandler) getLocation(req *http.Request, item *Item) (string, bool) {
+func (r *HttpHandler) getLocation(req *http.Request, item *Item) (string, bool) {
 	path := req.URL.Path
 	query := req.URL.RawQuery
 	concat := ""
