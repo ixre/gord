@@ -164,7 +164,7 @@ func (i *ItemManager) GetItemsFromFile(path string) []*Item {
 					os.Exit(1)
 				}
 			}
-			debugLog("[ Gord][ Load]: conf file:", path, "load ok!")
+			debugLog("config file ", path, " load success.")
 			return items
 		}
 	}
