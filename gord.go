@@ -109,7 +109,7 @@ func (i *ItemManager) initExample(path string) {
 			To:   "http://www.to2.net/{path}{query}",
 			Location: map[string]string{
 				"/a":      "http://a.com/{path}{query}{timestamp}",
-				"/b/*":    "http://b.com/t-{*}",
+				"/a/*":    "http://a.com/t-{*}",
 				"/1/2/3/": "http://a.com/{#0}-{#1}-{#2}",
 			},
 		},
