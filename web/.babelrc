@@ -1,3 +1,4 @@
+
 {
   "presets": [
     "@babel/preset-env",
@@ -7,6 +8,8 @@
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    ["import", { "libraryName": "antd", "libraryDirectory": "lib"}, "ant"],
+    ["import", { "libraryName": "ant-mobile", "libraryDirectory": "lib"}, "ant-mobile"]
   ]
 }

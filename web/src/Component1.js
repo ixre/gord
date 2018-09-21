@@ -1,6 +1,5 @@
 import React from "react"
-import {Icon} from "antd"
-
+import Icon from "antd/lib/icon"
 class Component1 extends React.Component {
     constructor(props) {
         super(props);

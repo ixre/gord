@@ -11,10 +11,10 @@ module.exports = {
     entry: {
         app: './index.js'
     },
-   // devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
-        port:3000,
+        port: 3000,
     },
     output: {
         filename: '[name].bundle-[hash:6].js',
@@ -23,8 +23,8 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new HtmlWebpackPlugin({title: "GORD",template:"./public/entry.html",appMountId:"root"}),
-        new webpack.optimize.SplitChunksPlugin({names:["common","vendor","manifest"]}),
+        new HtmlWebpackPlugin({title: "GORD", template: "./public/entry.html", appMountId: "root"}),
+        new webpack.optimize.SplitChunksPlugin({names: ["common", "vendor", "manifest"]}),
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '[name].[hash].css',
             chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
@@ -34,7 +34,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude:/node_modules/,
+                exclude: /node_modules/,
                 include: path.resolve(__dirname, 'src'),
                 loader: "babel-loader"
             },
