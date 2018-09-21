@@ -225,7 +225,7 @@ type HttpHandler struct {
 
 func (r *HttpHandler) ServeHTTP(rsp http.ResponseWriter, req *http.Request) {
 	host := req.Host
-	debugLog("[ Request]: source host ", host)
+	debugLog("[ Process]: source host ", host)
 	var item *Item = r.itemManager.GetItemByHost(host)
 	if item != nil {
 		if location, b := r.getLocation(req, item); b {

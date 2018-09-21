@@ -22,3 +22,8 @@ vendor
 *.exe
 *.test
 *.prof
+.idea
+dist
+node_modules
+*.lock
+*.log
