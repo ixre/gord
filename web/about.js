@@ -6,7 +6,6 @@ class About extends React.Component {
     }
 
     render() {
-        console.log("----")
         return (
             <div>
                 i am developer!
@@ -14,5 +13,4 @@ class About extends React.Component {
         );
     };
 }
-
 export default About

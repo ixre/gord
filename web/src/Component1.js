@@ -1,7 +1,6 @@
 import React from "react"
 import {Icon} from "antd"
 
-
 class Component1 extends React.Component {
     constructor(props) {
         super(props);
@@ -16,5 +15,4 @@ class Component1 extends React.Component {
         )
     };
 }
-
 export default Component1;

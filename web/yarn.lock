@@ -3107,6 +3107,14 @@ mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/mimic-fn/download/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
 
+mini-css-extract-plugin@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.4.3.tgz#98d60fcc5d228c3e36a9bd15a1d6816d6580beb8"
+  dependencies:
+    loader-utils "^1.1.0"
+    schema-utils "^1.0.0"
+    webpack-sources "^1.1.0"
+
 mini-store@^1.0.2, mini-store@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/mini-store/-/mini-store-1.1.2.tgz#cc150e0878e080ca58219d47fccefefe2c9aea3e"
